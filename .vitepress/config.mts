@@ -68,8 +68,8 @@ export default defineConfigWithTheme<ThemeConfig>({
   // sitemap: {
   //   hostname: 'https://vitepress-theme-bluearchive.vercel.app',
   // },
-  title: "Sensei's 部落格",
-  description: "Sensei's 部落格",
+  title: "Sensei's sakamichi",
+  description: "Sensei's sakamichi",
   themeConfig: {
     // navBar
     menuList: [
@@ -79,14 +79,14 @@ export default defineConfigWithTheme<ThemeConfig>({
 
     //banner区配置
     videoBanner: false,
-    name: "Sensei's 部落格",
-    welcomeText: 'Hello, VitePress',
+    name: "Sensei's sakamichi",
+    welcomeText: 'Hello, Color',
     motto: ['和你的日常，就是奇迹', '何気ない日常で、ほんの少しの奇跡を見つける物語。'],
     social: [
-      { icon: 'github', url: 'https://github.com/' },
-      { icon: 'bilibili', url: 'https://www.bilibili.com/' },
-      { icon: 'qq', url: 'https://im.qq.com/index/' },
-      { icon: 'wechat', url: 'https://weixin.qq.com/' },
+      { icon: 'github', url: 'https://github.com/sakamichime' },
+      { icon: 'bilibili', url: 'https://space.bilibili.com/473907063' },
+      { icon: 'qq', url: 'https://qm.qq.com/q/ppDgMrXhWq' },
+      { icon: 'wechat', url: 'https://u.wechat.com/MOTLAhD6ODNIIA_6fCPv26A?s=2' },
     ],
 
     //spine语音配置，可选zh/jp
