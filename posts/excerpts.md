@@ -2,6 +2,7 @@
 title: Excerpts
 date: 2013-12-25
 tags: [Excerpts, test]
+draft: true
 head:
   - - meta
     - name: description

@@ -2,6 +2,7 @@
 title: 中文測試
 date: 2013-12-24
 tags: [Chinese, test]
+draft: true
 head:
   - - meta
     - name: description

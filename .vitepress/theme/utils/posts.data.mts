@@ -22,6 +22,7 @@ interface Post {
   cover?: string
   excerpt: string | undefined
   pinned?: boolean
+  draft?: boolean // 草稿标记，设为 true 则文章不会在列表中显示
 }
 
 // Post数据缓存
@@ -63,7 +64,8 @@ function getPost(md: any, file: string, postDir: string): Post {
     wordCount: countWords(content),
     cover: data.cover,
     excerpt: excerpt,
-    pinned: !!data.pinned
+    pinned: !!data.pinned,
+    draft: !!data.draft // 读取草稿标记
   }
 
   cache.set(fullPath, { timestamp, post })
@@ -78,6 +80,7 @@ async function load() {
     .readdirSync(postDir)
     .filter((file) => file.endsWith('.md') && file !== 'index.md')
     .map((file) => getPost(md, file, postDir))
+    .filter((post) => !post.draft) // 过滤掉草稿文章（draft: true 的文章不会显示）
     .sort((a, b) => {
       // 先按置顶排序,再按创建时间排序
       if (a.pinned && !b.pinned) return -1

@@ -6,6 +6,7 @@ date: 2025-5-10
 tags: [image]
 
 cover: /wallpaper-878514.webp
+draft: true
 ---
 This is a cover test post.
 

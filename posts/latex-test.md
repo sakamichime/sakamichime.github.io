@@ -2,6 +2,7 @@
 title: Latex公式测试
 date: 2020-01-01
 tags: [Latex, test]
+draft: true
 head:
   - - meta
     - name: description

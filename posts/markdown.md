@@ -2,6 +2,7 @@
 title: Markdown Style test
 date: 2018-07-24
 tags: [Foo, Bar]
+draft: true
 head:
   - - meta
     - name: description
