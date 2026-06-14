@@ -9,11 +9,11 @@
     <div
       ref="playerContainer"
       class="playerContainer"
-      @click="handlePlayerClick"
-      @touchstart="handlePlayerClick"
+      @mousedown="startDrag"
+      @touchstart="startDrag"
     ></div>
     <transition name="fade">
-      <div v-if="showDialog" class="chatdialog-container">
+      <div v-if="showDialog" class="chatdialog-container" :style="dialogPos">
         <div class="chatdialog-triangle"></div>
         <div class="chatdialog">{{ currentDialog }}</div>
       </div>
@@ -248,6 +248,93 @@ const isMobileDevice = () => {
 
 let isPlaying = false // 添加播放状态标志
 
+// 拖动相关状态
+let isDragging = false
+let dragStartX = 0
+let dragStartY = 0
+let playerStartX = 0
+let playerStartY = 0
+let hasMoved = false
+const dialogPos = ref({ left: '2vw', top: 'auto', bottom: '10vw' })
+
+const updateDialogPos = () => {
+  if (!playerContainer.value) return
+  const rect = playerContainer.value.getBoundingClientRect()
+  dialogPos.value = {
+    left: (rect.left + rect.width * 0.3) + 'px',
+    bottom: (window.innerHeight - rect.top + 10) + 'px',
+    top: 'auto'
+  }
+}
+
+const startDrag = (event) => {
+  event.preventDefault()
+  event.stopPropagation()
+
+  isDragging = true
+  hasMoved = false
+
+  const clientX = event.touches ? event.touches[0].clientX : event.clientX
+  const clientY = event.touches ? event.touches[0].clientY : event.clientY
+
+  dragStartX = clientX
+  dragStartY = clientY
+
+  const rect = playerContainer.value.getBoundingClientRect()
+  playerStartX = rect.left
+  playerStartY = rect.top
+
+  // 拖动时禁用transition防止卡顿
+  playerContainer.value.style.transition = 'none'
+
+  document.addEventListener('mousemove', onDrag)
+  document.addEventListener('mouseup', stopDrag)
+  document.addEventListener('touchmove', onDrag, { passive: false })
+  document.addEventListener('touchend', stopDrag)
+}
+
+const onDrag = (event) => {
+  if (!isDragging) return
+  event.preventDefault()
+
+  const clientX = event.touches ? event.touches[0].clientX : event.clientX
+  const clientY = event.touches ? event.touches[0].clientY : event.clientY
+
+  const dx = clientX - dragStartX
+  const dy = clientY - dragStartY
+
+  if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+    hasMoved = true
+  }
+
+  const newX = playerStartX + dx
+  const newY = playerStartY + dy
+
+  playerContainer.value.style.left = newX + 'px'
+  playerContainer.value.style.bottom = 'auto'
+  playerContainer.value.style.top = newY + 'px'
+
+  updateDialogPos()
+}
+
+const stopDrag = (event) => {
+  if (!isDragging) return
+  isDragging = false
+
+  // 恢复transition
+  playerContainer.value.style.transition = ''
+
+  document.removeEventListener('mousemove', onDrag)
+  document.removeEventListener('mouseup', stopDrag)
+  document.removeEventListener('touchmove', onDrag)
+  document.removeEventListener('touchend', stopDrag)
+
+  // 没有移动才算点击，触发对话
+  if (!hasMoved) {
+    handlePlayerClick(event)
+  }
+}
+
 const showDialog = ref(false)
 const currentDialog = ref('')
 
@@ -269,7 +356,7 @@ const debounce = (fn, delay) => {
 const resetBonesState = ref(null)
 
 // 点击处理函数
-const handlePlayerClick = debounce(async (event) => {
+const handlePlayerClick = async (event) => {
   event.preventDefault();
   event.stopPropagation();
 
@@ -295,6 +382,7 @@ const handlePlayerClick = debounce(async (event) => {
       if (!buffer) throw new Error('音频加载失败');
 
       currentDialog.value = selectedPair.text;
+      updateDialogPos();
       showDialog.value = true;
 
       currentAnimationState.addAnimation(2, selectedPair.animation, false, 0);
@@ -315,7 +403,7 @@ const handlePlayerClick = debounce(async (event) => {
       showDialog.value = false;
     }
   }
-}, 300)
+}
 
 // 提升 moveBones 函数到组件作用域以便在其他地方使用
 let moveBonesHandler = null
@@ -590,14 +678,14 @@ onMounted(() => {
   height: 24vw;
   filter: drop-shadow(0 0 3px rgba(40, 42, 44, 0.42));
   transition: all 1s;
-  cursor: pointer;
+  cursor: grab;
+  &:active {
+    cursor: grabbing;
+  }
 }
 .chatdialog-container {
   position: fixed;
-  bottom: 10vw;
-  left: 2vw;
   z-index: 101;
-  transition: all 1s;
   pointer-events: none;
   filter: drop-shadow(0 0 3px rgba(36, 36, 36, 0.6));
 }
@@ -605,12 +693,12 @@ onMounted(() => {
 .chatdialog-triangle {
   position: absolute;
   left: 2vw;
-  top: -10px;
+  bottom: -10px;
   width: 0;
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-bottom: 10px solid rgba(255, 255, 255, 0.9);
+  border-top: 10px solid rgba(255, 255, 255, 0.9);
   z-index: 101;
 }
 
