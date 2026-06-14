@@ -136,7 +136,7 @@ onMounted(() => {
     border: solid 3px var(--infobox-border-color);
     transition: transform 0.6s ease, box-shadow 0.4s ease, filter 0.5s;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
-    cursor: pointer;
+    cursor: url('/cursors/link.cur'), pointer;
     user-select: none;
     filter: var(--img-brightness);
 

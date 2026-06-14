@@ -255,6 +255,11 @@ let dragStartY = 0
 let playerStartX = 0
 let playerStartY = 0
 let hasMoved = false
+let targetX = 0
+let targetY = 0
+let currentX = 0
+let currentY = 0
+let dragAnimFrame = null
 const dialogPos = ref({ left: '2vw', top: 'auto', bottom: '10vw' })
 
 const updateDialogPos = () => {
@@ -264,6 +269,24 @@ const updateDialogPos = () => {
     left: (rect.left + rect.width * 0.3) + 'px',
     bottom: (window.innerHeight - rect.top + 10) + 'px',
     top: 'auto'
+  }
+}
+
+// 缓动动画循环
+const animateDrag = () => {
+  if (!playerContainer.value) return
+  // lerp 插值，0.15 越小越柔
+  currentX += (targetX - currentX) * 0.05
+  currentY += (targetY - currentY) * 0.05
+
+  playerContainer.value.style.left = currentX + 'px'
+  playerContainer.value.style.top = currentY + 'px'
+  playerContainer.value.style.bottom = 'auto'
+
+  updateDialogPos()
+
+  if (isDragging) {
+    dragAnimFrame = requestAnimationFrame(animateDrag)
   }
 }
 
@@ -283,9 +306,15 @@ const startDrag = (event) => {
   const rect = playerContainer.value.getBoundingClientRect()
   playerStartX = rect.left
   playerStartY = rect.top
+  targetX = rect.left
+  targetY = rect.top
+  currentX = rect.left
+  currentY = rect.top
 
   // 拖动时禁用transition防止卡顿
   playerContainer.value.style.transition = 'none'
+
+  dragAnimFrame = requestAnimationFrame(animateDrag)
 
   document.addEventListener('mousemove', onDrag)
   document.addEventListener('mouseup', stopDrag)
@@ -307,19 +336,18 @@ const onDrag = (event) => {
     hasMoved = true
   }
 
-  const newX = playerStartX + dx
-  const newY = playerStartY + dy
-
-  playerContainer.value.style.left = newX + 'px'
-  playerContainer.value.style.bottom = 'auto'
-  playerContainer.value.style.top = newY + 'px'
-
-  updateDialogPos()
+  targetX = playerStartX + dx
+  targetY = playerStartY + dy
 }
 
 const stopDrag = (event) => {
   if (!isDragging) return
   isDragging = false
+
+  if (dragAnimFrame) {
+    cancelAnimationFrame(dragAnimFrame)
+    dragAnimFrame = null
+  }
 
   // 恢复transition
   playerContainer.value.style.transition = ''
@@ -464,6 +492,7 @@ const initializeSpinePlayer = async (assets) => {
         function moveBones(event) {
           // 如果眼睛控制被禁用，直接返回
           if (isEyeControlDisabled.value) return
+          if (!playerContainer.value) return
 
           const containerRect = playerContainer.value.getBoundingClientRect()
 
@@ -577,6 +606,7 @@ const currentAssets = computed(() => spineAssets[currentCharacter.value])
 
 // 事件委托
 const handleEvents = (event) => {
+  if (!playerContainer.value) return
   if (event.type === 'scroll') {
     handleScroll()
   } else if (['mousemove', 'touchmove'].includes(event.type)) {

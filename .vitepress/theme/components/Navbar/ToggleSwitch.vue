@@ -140,7 +140,7 @@
     height: 24px;
     background: rgba(82, 82, 82, 0.3);
     border-radius: 24px;
-    cursor: pointer;
+    cursor: url('/cursors/link.cur'), pointer;
     transition: all 0.4s ease;
   
     &::after {
@@ -201,7 +201,7 @@
       border: 1px solid rgba(var(--blue-shadow-color), 0.15);
       background: var(--foreground-color);
       color: var(--font-color-grey);
-      cursor: pointer;
+      cursor: url('/cursors/link.cur'), pointer;
       appearance: none;
       transition: all 0.3s ease;
       

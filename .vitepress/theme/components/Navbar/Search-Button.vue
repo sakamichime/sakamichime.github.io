@@ -14,7 +14,7 @@ const showDialog = () => {
 
 <style scoped lang="less">
 .search {
-  cursor: pointer;
+  cursor: url('/cursors/link.cur'), pointer;
   font-size: 2vw;
   color: var(--font-color-grey);
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);

@@ -9,6 +9,26 @@ import './components/Spine-Player/spine-player.css'
 export default {
   Layout,
   enhanceApp({ app, router, siteData }) {
-    // ...
+    // 拖选文本时切换 areaselect 光标
+    if (typeof window !== 'undefined') {
+      let selecting = false
+      document.addEventListener('mousedown', (e) => {
+        if (e.detail === 1) {
+          selecting = false
+        }
+      })
+      document.addEventListener('mousemove', (e) => {
+        if (e.buttons === 1 && !selecting) {
+          selecting = true
+          document.body.classList.add('selecting')
+        }
+      })
+      document.addEventListener('mouseup', () => {
+        if (selecting) {
+          selecting = false
+          document.body.classList.remove('selecting')
+        }
+      })
+    }
   },
 } satisfies Theme

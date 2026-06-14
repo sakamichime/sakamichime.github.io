@@ -53,7 +53,7 @@ onMounted(() => {
 
 <style scoped lang="less">
 .music-disc {
-  cursor: pointer;
+  cursor: url('/cursors/link.cur'), pointer;
   flex-shrink: 0;
 }
 

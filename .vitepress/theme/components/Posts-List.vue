@@ -460,7 +460,7 @@ watch(
   button {
     background-color: transparent;
     border-style: none;
-    cursor: pointer;
+    cursor: url('/cursors/link.cur'), pointer;
   }
 
   .hide {

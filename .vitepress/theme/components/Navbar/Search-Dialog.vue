@@ -154,7 +154,7 @@ onMounted(() => {
   font-size: 36px;
   border: none;
   background: transparent;
-  cursor: pointer;
+  cursor: url('/cursors/link.cur'), pointer;
 }
 
 #search-input {

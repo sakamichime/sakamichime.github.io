@@ -338,7 +338,7 @@ const themeConfig = useData().theme.value
       right: 0;
       width: 48px;
       height: 48px;
-      cursor: pointer;
+      cursor: url('/cursors/link.cur'), pointer;
       background-image: var(--vp-icon-copy);
       background-repeat: no-repeat;
       background-position: center center;

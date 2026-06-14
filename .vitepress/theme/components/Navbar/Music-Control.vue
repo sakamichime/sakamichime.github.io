@@ -40,7 +40,7 @@ onMounted(() => {
   justify-content: center;
   font-size: 2vw;
   color: var(--font-color-grey);
-  cursor: pointer;
+  cursor: url('/cursors/link.cur'), pointer;
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   &:hover {
     transform: translateY(-3px);

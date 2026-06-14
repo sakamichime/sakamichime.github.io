@@ -145,7 +145,7 @@ header {
     flex-direction: column;
     align-items: center;
     width: 32px;
-    cursor: pointer;
+    cursor: url('/cursors/link.cur'), pointer;
   }
 
   .hamburger .line {

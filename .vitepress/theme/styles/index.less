@@ -1,2 +1,81 @@
 @import url(./vars.less);
 @import url(./icons.less);
+
+// Blue Archive 自定义光标
+// normal.cur - 默认光标
+* {
+  cursor: url('/cursors/normal.cur'), auto;
+}
+
+// link.cur - 所有可点击元素
+a, button, [role="button"], .iconfont, .music-disc, .hamburger,
+.toggleSwitch, select, .select-wrapper, .search-button,
+.copy, [data-copy], .copy-code-button {
+  cursor: url('/cursors/link.cur'), pointer !important;
+}
+
+// pen.cur - 文本输入/代码区域（悬停时）
+code, pre, .vp-code, .vp-doc, .vp-code-group, .line-numbers,
+input, textarea, [contenteditable="true"] {
+  cursor: url('/cursors/pen.cur'), text;
+}
+
+// text.cur - 文本输入聚焦时
+input:focus, textarea:focus, [contenteditable="true"]:focus,
+code:hover, pre:hover {
+  cursor: url('/cursors/text.cur'), text;
+}
+
+// text_static_white.cur - 可选中的正文文本区域
+p, span, li, h1, h2, h3, h4, h5, h6, blockquote, td, th, dd, dt {
+  cursor: url('/cursors/text_static_white.cur'), text;
+}
+
+// block.cur - 禁用元素
+[disabled], [aria-disabled="true"], .disabled, .cooling {
+  cursor: url('/cursors/block.cur'), not-allowed !important;
+}
+
+// help.cur - 带提示信息的元素
+[title], [aria-label], abbr {
+  cursor: url('/cursors/help.cur'), help;
+}
+
+// move.cur - 可拖动元素
+[draggable="true"], .playerContainer {
+  cursor: url('/cursors/move.cur'), grab !important;
+}
+.playerContainer:active {
+  cursor: url('/cursors/move.cur'), grabbing !important;
+}
+
+// alternativeselect.cur - 右键菜单/备用选择（悬停在图片上）
+img, video, .post-cover {
+  cursor: url('/cursors/alternativeselect.cur'), pointer;
+}
+
+// areaselect.cur - 选中状态（鼠标拖选文本时通过JS切换）
+.selecting {
+  cursor: url('/cursors/areaselect.cur'), crosshair !important;
+}
+
+// 调整大小光标
+*[style*="resize"], .resize-nwse {
+  cursor: url('/cursors/resizeDIAG1.cur'), nwse-resize;
+}
+.resize-nesw {
+  cursor: url('/cursors/resizeDIAG2.cur'), nesw-resize;
+}
+.resize-ns {
+  cursor: url('/cursors/resizeNS.cur'), ns-resize;
+}
+.resize-we {
+  cursor: url('/cursors/resizeWE.cur'), ew-resize;
+}
+
+// 覆盖所有组件内的 cursor: pointer（scoped 样式优先级高，需要 !important + 具体类名）
+body .toggleSwitch, body select, body .search-button, body .music-control,
+body .post-item, body .to-top, body .welcome-box, body .posts-list-item,
+body .hamburger, body .music-disc, body .iconfont, body .spine-player {
+  cursor: url('/cursors/link.cur'), pointer !important;
+}
