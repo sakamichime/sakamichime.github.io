@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-const isPlaying = ref(false) // 音乐播放状态
+const isPlaying = ref(false)
 const music = ref<HTMLAudioElement | null>(null)
 
 const toggleMusic = () => {
@@ -24,11 +24,15 @@ const toggleMusic = () => {
 onMounted(() => {
   music.value = document.getElementById('background-music') as HTMLAudioElement
   if (music.value) {
-    music.value.volume = 0.3 // 设置音量为30%
-    music.value.pause() // 初始状态为暂停
+    music.value.volume = 0.3
+    // 同步播放状态
+    isPlaying.value = !music.value.paused
+    music.value.addEventListener('play', () => { isPlaying.value = true })
+    music.value.addEventListener('pause', () => { isPlaying.value = false })
   }
 })
 </script>
+
 <style scoped lang="less">
 .iconfont {
   display: flex;

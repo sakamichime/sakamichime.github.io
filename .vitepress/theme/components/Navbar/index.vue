@@ -11,8 +11,10 @@
           </li>
         </ul>
       </span>
-      <div
-        class="hamburger"
+      <span class="right-actions">
+        <MusicDisc></MusicDisc>
+        <div
+          class="hamburger"
         :class="{ active: state.showDropdownMenu }"
         @click="toggleDropdownMenu"
       >
@@ -20,6 +22,7 @@
         <span class="line"></span>
         <span class="line"></span>
       </div>
+      </span>
       <DropdownMenu :showMenu="state.showDropdownMenu"></DropdownMenu>
     </nav>
   </header>
@@ -38,6 +41,7 @@ const { state } = useStore()
 
 import SearchDialog from './Search-Dialog.vue'
 import DropdownMenu from './Dropdown-Menu.vue'
+import MusicDisc from '../Music-Disc.vue'
 
 const closeDialog = () => {
   state.searchDialog = false
@@ -100,8 +104,8 @@ header {
   }
 
   .menu {
+    flex: 1;
     ul {
-      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -128,6 +132,12 @@ header {
         }
       }
     }
+  }
+
+  .right-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
   .hamburger {
